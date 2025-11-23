@@ -199,22 +199,33 @@ class _ZshrcPageState extends State<ZshrcPage> {
                                   ],
                                 ),
                               )
-                            : TextField(
-                                controller: _controller,
-                                scrollController: _scrollController,
-                                maxLines: null,
-                                expands: true,
-                                textAlignVertical: TextAlignVertical.top,
-                                style: const TextStyle(
-                                  fontFamily: 'monospace',
-                                  fontSize: 14,
+                            : SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: SizedBox(
+                                  width: 800, // Fixed width to prevent wrapping
+                                  child: TextField(
+                                    controller: _controller,
+                                    scrollController: _scrollController,
+                                    maxLines: null,
+                                    expands: true,
+                                    textAlignVertical: TextAlignVertical.top,
+                                    style: const TextStyle(
+                                      fontFamily: 'monospace',
+                                      fontSize: 14,
+                                    ),
+                                    decoration: const InputDecoration(
+                                      hintText: 'Enter your .zshrc configuration...',
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.all(16),
+                                    ),
+                                    onChanged: (_) => _onTextChanged(),
+                                    keyboardType: TextInputType.multiline,
+                                    textInputAction: TextInputAction.newline,
+                                    strutStyle: const StrutStyle(
+                                      forceStrutHeight: true,
+                                    ),
+                                  ),
                                 ),
-                                decoration: const InputDecoration(
-                                  hintText: 'Enter your .zshrc configuration...',
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.all(16),
-                                ),
-                                onChanged: (_) => _onTextChanged(),
                               ),
                   ),
                   // Editor Footer
