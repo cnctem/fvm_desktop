@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fvm_desktop/utils/zshrc/zshrc_manager.dart';
 import 'package:fvm_desktop/utils/zshrc/zshrc_text_field.dart';
 
@@ -101,14 +102,71 @@ class _ZshrcPageState extends State<ZshrcPage> {
     }
   }
 
+  Widget _buildCopyButton({
+    required String title,
+    required String content,
+  }) {
+    return Card(
+      elevation: 2,
+      child: InkWell(
+        onTap: () => _copyToClipboard(content, title),
+        borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      content.replaceAll('\n', ' ').length > 50
+                          ? '${content.replaceAll('\n', ' ').substring(0, 50)}...'
+                          : content.replaceAll('\n', ' '),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Icon(Icons.content_copy, size: 16, color: Colors.grey),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _copyToClipboard(String content, String title) {
+    Clipboard.setData(ClipboardData(text: content));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Copied "$title" to clipboard'),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
         children: [
-          // Left half - Text Editor
+          // Left side - Text Editor (70% width)
           Expanded(
-            flex: 1,
+            flex: 7,
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
@@ -263,80 +321,81 @@ class _ZshrcPageState extends State<ZshrcPage> {
               ),
             ),
           ),
-          // Right half - Preview/Info Panel (placeholder for now)
+          // Right side - Quick Copy Buttons (30% width)
           Expanded(
-            flex: 1,
+            flex: 3,
             child: Container(
               color: Theme.of(context).scaffoldBackgroundColor,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.terminal,
-                      size: 64,
-                      color: Theme.of(context).primaryColor.withOpacity(0.5),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Terminal Configuration',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Edit your .zshrc file on the left',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).textTheme.bodySmall?.color,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Card(
-                      margin: const EdgeInsets.all(16),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'File Information',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            _buildInfoRow('Path:', _filePath.isEmpty ? 'Loading...' : _filePath),
-                            _buildInfoRow('Size:', _fileInfo['size'] ?? 'Unknown'),
-                            _buildInfoRow('Last Modified:', _fileInfo['lastModified'] ?? 'Unknown'),
-                            _buildInfoRow('Status:', _fileInfo['exists'] == 'true' ? 'Exists' : 'Not Found'),
-                          ],
+              child: Column(
+                children: [
+                  // Header
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: 1,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.content_copy, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Quick Copy',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Content - Scrollable list of copy buttons
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _buildCopyButton(
+                            title: '环境路径',
+                            content: 'export PATH="\$HOME/fvm/default/bin:\$PATH"',
+                          ),
+                          const SizedBox(height: 12),
+                          _buildCopyButton(
+                            title: '官方Git源',
+                            content: 'export FLUTTER_GIT_URL=https://github.com/flutter/flutter.git',
+                          ),
+                          const SizedBox(height: 12),
+                          _buildCopyButton(
+                            title: '镜像Git源',
+                            content: 'export FLUTTER_GIT_URL=https://mirrors.tuna.tsinghua.edu.cn/git/flutter-sdk.git',
+                          ),
+                          const SizedBox(height: 12),
+                          _buildCopyButton(
+                            title: '依赖镜像',
+                            content: 'export PUB_HOSTED_URL=https://pub.flutter-io.cn\nexport FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn',
+                          ),
+                          const SizedBox(height: 12),
+                          _buildCopyButton(
+                            title: '鸿蒙Git源',
+                            content: 'export FLUTTER_GIT_URL=https://gitcode.com/openharmony-tpc/flutter_flutter.git',
+                          ),
+                          const SizedBox(height: 12),
+                          _buildCopyButton(
+                            title: 'HarmonyOS SDK & Other Environment',
+                            content: 'export DEVECO_SDK_HOME=\$TOOL_HOME/sdk # command-line-tools/sdk\nexport PATH=\$TOOL_HOME/tools/ohpm/bin:\$PATH # command-line-tools/ohpm/bin\nexport PATH=\$TOOL_HOME/tools/hvigor/bin:\$PATH # command-line-tools/hvigor/bin\nexport PATH=\$TOOL_HOME/tools/node/bin:\$PATH # command-line-tools/tool/node/bin',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 100,
-            child: Text(
-              label,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Expanded(
-            child: Text(value),
           ),
         ],
       ),
