@@ -2,8 +2,7 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 
 class FilePermissions {
-  static const String _zshrcPath = '~/.zshrc';
-  
+
   static Future<String> getZshrcPath() async {
     print('DEBUG: Platform.environment[HOME] = ${Platform.environment['HOME']}');
     
@@ -64,7 +63,6 @@ class FilePermissions {
       }
       
       final stat = await file.stat();
-      final currentUser = Platform.environment['USER'];
       
       // Simple permission check - in real app, you'd want more sophisticated checks
       return stat.modeString().contains('w');

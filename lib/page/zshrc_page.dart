@@ -15,7 +15,6 @@ class _ZshrcPageState extends State<ZshrcPage> {
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = true;
   bool _hasChanges = false;
-  String _filePath = '';
   Map<String, String> _fileInfo = {};
   String? _errorMessage;
 
@@ -45,7 +44,6 @@ class _ZshrcPageState extends State<ZshrcPage> {
       setState(() {
         _controller.text = content;
         _fileInfo = fileInfo;
-        _filePath = fileInfo['path'] ?? 'Unknown';
         _isLoading = false;
       });
     } catch (e) {

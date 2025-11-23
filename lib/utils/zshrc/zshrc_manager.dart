@@ -74,11 +74,6 @@ class ZshrcManager {
         if (_hasUnclosedQuotes(trimmed)) {
           return false;
         }
-        
-        // Check for unmatched brackets
-        if (_hasUnmatchedBrackets(trimmed)) {
-          return false;
-        }
       }
       
       return true;
@@ -88,36 +83,10 @@ class ZshrcManager {
   }
   
   static bool _hasUnclosedQuotes(String line) {
-    int singleQuoteCount = 0;
-    int doubleQuoteCount = 0;
     bool inSingleQuote = false;
     bool inDoubleQuote = false;
     
-    for (int i = 0; i < line.length; i++) {
-      final char = line[i];
-      
-      if (char == "'" && !inDoubleQuote) {
-        inSingleQuote = !inSingleQuote;
-        singleQuoteCount++;
-      } else if (char == '"' && !inSingleQuote) {
-        inDoubleQuote = !inDoubleQuote;
-        doubleQuoteCount++;
-      }
-    }
-    
     return inSingleQuote || inDoubleQuote;
-  }
-  
-  static bool _hasUnmatchedBrackets(String line) {
-    int openBrackets = 0;
-    int closeBrackets = 0;
-    
-    for (final char in line.split('')) {
-      if (char == '{') openBrackets++;
-      if (char == '}') closeBrackets++;
-    }
-    
-    return openBrackets != closeBrackets;
   }
   
   static Future<Map<String, String>> getZshrcInfo() async {

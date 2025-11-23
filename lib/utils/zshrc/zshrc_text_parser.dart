@@ -64,12 +64,6 @@ class ZshrcTextParser {
       color: Colors.black87,
     );
     
-    final defaultCommentStyle = commentStyle ?? TextStyle(
-      color: Colors.grey[500],
-      fontFamily: 'monospace',
-      fontSize: 14,
-    );
-    
     return RichText(
       text: parseTextWithComments(text, baseStyle: defaultBaseStyle),
       maxLines: maxLines,
