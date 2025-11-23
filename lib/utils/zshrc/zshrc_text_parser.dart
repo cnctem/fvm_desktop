@@ -41,8 +41,8 @@ class ZshrcTextParser {
       
       // Add the '#' and everything after it with gray color
       final grayStyle = baseStyle?.copyWith(
-        color: Colors.grey[600],
-      ) ?? TextStyle(color: Colors.grey[600]);
+        color: const Color.fromARGB(255, 102, 159, 102),
+      ) ?? TextStyle(color: Colors.grey[500]);
       
       spans.add(TextSpan(text: commentAndAfter, style: grayStyle));
     }
@@ -65,7 +65,7 @@ class ZshrcTextParser {
     );
     
     final defaultCommentStyle = commentStyle ?? TextStyle(
-      color: Colors.grey[600],
+      color: Colors.grey[500],
       fontFamily: 'monospace',
       fontSize: 14,
     );
