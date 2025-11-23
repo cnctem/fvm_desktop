@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fvm_desktop/page/main_menu.dart';
-import 'package:fvm_desktop/utils/theme_provider.dart';
-import 'package:fvm_desktop/utils/theme_manager.dart';
+import 'package:fvm_desktop/utils/theme/theme_provider.dart';
+import 'package:fvm_desktop/utils/theme/theme_manager.dart';
 import 'package:provider/provider.dart';
 
 void main() {
