@@ -171,7 +171,7 @@ class _ZshrcPageState extends State<ZshrcPage> {
               decoration: BoxDecoration(
                 border: Border(
                   right: BorderSide(
-                    color: Theme.of(context).dividerColor,
+                    color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
                     width: 1,
                   ),
                 ),
@@ -185,7 +185,7 @@ class _ZshrcPageState extends State<ZshrcPage> {
                       color: Theme.of(context).primaryColor.withOpacity(0.1),
                       border: Border(
                         bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
+                          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
                           width: 1,
                         ),
                       ),
@@ -290,7 +290,7 @@ class _ZshrcPageState extends State<ZshrcPage> {
                       color: Theme.of(context).primaryColor.withOpacity(0.1),
                       border: Border(
                         top: BorderSide(
-                          color: Theme.of(context).dividerColor,
+                          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
                           width: 1,
                         ),
                       ),
@@ -335,7 +335,7 @@ class _ZshrcPageState extends State<ZshrcPage> {
                       color: Theme.of(context).primaryColor.withOpacity(0.1),
                       border: Border(
                         bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
+                          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
                           width: 1,
                         ),
                       ),
