@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fvm_desktop/utils/zshrc/zshrc_manager.dart';
+import 'package:fvm_desktop/utils/zshrc/zshrc_text_field.dart';
 
 class ZshrcPage extends StatefulWidget {
   const ZshrcPage({super.key});
@@ -9,7 +10,7 @@ class ZshrcPage extends StatefulWidget {
 }
 
 class _ZshrcPageState extends State<ZshrcPage> {
-  final TextEditingController _controller = TextEditingController();
+  final ZshrcTextEditingController _controller = ZshrcTextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = true;
   bool _hasChanges = false;
@@ -203,16 +204,12 @@ class _ZshrcPageState extends State<ZshrcPage> {
                                 scrollDirection: Axis.horizontal,
                                 child: SizedBox(
                                   width: 800, // Fixed width to prevent wrapping
-                                  child: TextField(
+                                  child: ZshrcTextField(
                                     controller: _controller,
                                     scrollController: _scrollController,
                                     maxLines: null,
                                     expands: true,
                                     textAlignVertical: TextAlignVertical.top,
-                                    style: const TextStyle(
-                                      fontFamily: 'monospace',
-                                      fontSize: 14,
-                                    ),
                                     decoration: const InputDecoration(
                                       hintText: 'Enter your .zshrc configuration...',
                                       border: InputBorder.none,
