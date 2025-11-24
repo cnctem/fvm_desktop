@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fvm_desktop/page/main_menu.dart';
 import 'package:fvm_desktop/utils/theme/theme_provider.dart';
 import 'package:fvm_desktop/utils/theme/theme_manager.dart';
@@ -23,6 +24,8 @@ class MyApp extends StatelessWidget {
             darkTheme: ThemeManager.darkTheme,
             themeMode: themeProvider.themeMode,
             home: const MainMenu(),
+            navigatorObservers: [FlutterSmartDialog.observer],
+            builder: FlutterSmartDialog.init(),
           );
         },
       ),

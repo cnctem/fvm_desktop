@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'zshrc_text_parser.dart';
 
 class ZshrcTextEditingController extends TextEditingController {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fvm_desktop/utils/zshrc/zshrc_manager.dart';
 import 'package:fvm_desktop/utils/zshrc/zshrc_text_field.dart';
 
@@ -61,12 +62,7 @@ class _ZshrcPageState extends State<ZshrcPage> {
       // Validate syntax before saving
       final isValid = await ZshrcManager.validateZshrcSyntax(content);
       if (!isValid) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Syntax validation failed. Please check your configuration.'),
-            backgroundColor: Colors.orange,
-          ),
-        );
+        SmartDialog.showToast('Syntax validation failed. Please check your configuration.');
         return;
       }
 
@@ -76,19 +72,9 @@ class _ZshrcPageState extends State<ZshrcPage> {
         _hasChanges = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('.zshrc file saved successfully!'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      SmartDialog.showToast('.zshrc file saved successfully!');
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to save .zshrc file: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      SmartDialog.showToast('Failed to save .zshrc file: $e');
     }
   }
 
@@ -148,13 +134,7 @@ class _ZshrcPageState extends State<ZshrcPage> {
 
   void _copyToClipboard(String content, String title) {
     Clipboard.setData(ClipboardData(text: content));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Copied "$title" to clipboard'),
-        backgroundColor: Colors.green,
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    SmartDialog.showToast('Copied "$title" to clipboard',);
   }
 
   @override
@@ -180,7 +160,7 @@ class _ZshrcPageState extends State<ZshrcPage> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      color: Theme.of(context).primaryColor,
                       border: Border(
                         bottom: BorderSide(
                           color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
@@ -285,7 +265,7 @@ class _ZshrcPageState extends State<ZshrcPage> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      color: Theme.of(context).primaryColor,
                       border: Border(
                         top: BorderSide(
                           color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
@@ -330,7 +310,7 @@ class _ZshrcPageState extends State<ZshrcPage> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      color: Theme.of(context).primaryColor,
                       border: Border(
                         bottom: BorderSide(
                           color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
