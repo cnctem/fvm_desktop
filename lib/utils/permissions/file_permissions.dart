@@ -4,8 +4,6 @@ import 'package:path/path.dart' as path;
 class FilePermissions {
 
   static Future<String> getZshrcPath() async {
-    print('DEBUG: Platform.environment[HOME] = ${Platform.environment['HOME']}');
-    
     // Try to get the real user home directory
     String? homeDir;
     
@@ -21,13 +19,11 @@ class FilePermissions {
         final user = Platform.environment['USER'] ?? Platform.environment['LOGNAME'];
         if (user != null) {
           final realHome = '/Users/$user';
-          print('DEBUG: Detected sandbox environment, trying real home: $realHome');
           
           // Check if this path exists
           final realHomeDir = Directory(realHome);
           if (await realHomeDir.exists()) {
             homeDir = realHome;
-            print('DEBUG: Using real home directory: $homeDir');
           }
         }
       }
@@ -37,12 +33,10 @@ class FilePermissions {
     }
     
     if (homeDir == null) {
-      print('DEBUG: HOME environment variable is null!');
       throw Exception('Could not determine home directory');
     }
     
     final result = path.join(homeDir, '.zshrc');
-    print('DEBUG: Constructed .zshrc path: $result');
     return result;
   }
   

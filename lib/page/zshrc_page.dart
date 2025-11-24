@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fvm_desktop/utils/zshrc/zshrc_manager.dart';
 import 'package:fvm_desktop/utils/zshrc/zshrc_text_field.dart';
+import 'package:fvm_desktop/utils/commands_text.dart';
 
 class ZshrcPage extends StatefulWidget {
   const ZshrcPage({super.key});
@@ -114,9 +115,7 @@ class _ZshrcPageState extends State<ZshrcPage> {
                       content.replaceAll('\n', ' ').length > 50
                           ? '${content.replaceAll('\n', ' ').substring(0, 50)}...'
                           : content.replaceAll('\n', ' '),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -338,35 +337,17 @@ class _ZshrcPageState extends State<ZshrcPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          _buildCopyButton(
-                            title: '环境路径',
-                            content: 'export PATH="\$HOME/fvm/default/bin:\$PATH"',
-                          ),
-                          const SizedBox(height: 12),
-                          _buildCopyButton(
-                            title: '官方Git源',
-                            content: 'export FLUTTER_GIT_URL=https://github.com/flutter/flutter.git',
-                          ),
-                          const SizedBox(height: 12),
-                          _buildCopyButton(
-                            title: '镜像Git源',
-                            content: 'export FLUTTER_GIT_URL=https://mirrors.tuna.tsinghua.edu.cn/git/flutter-sdk.git',
-                          ),
-                          const SizedBox(height: 12),
-                          _buildCopyButton(
-                            title: '依赖镜像',
-                            content: 'export PUB_HOSTED_URL=https://pub.flutter-io.cn\nexport FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn',
-                          ),
-                          const SizedBox(height: 12),
-                          _buildCopyButton(
-                            title: '鸿蒙Git源',
-                            content: 'export FLUTTER_GIT_URL=https://gitcode.com/openharmony-tpc/flutter_flutter.git',
-                          ),
-                          const SizedBox(height: 12),
-                          _buildCopyButton(
-                            title: 'HarmonyOS SDK & Other Environment',
-                            content: 'export DEVECO_SDK_HOME=\$TOOL_HOME/sdk # command-line-tools/sdk\nexport PATH=\$TOOL_HOME/tools/ohpm/bin:\$PATH # command-line-tools/ohpm/bin\nexport PATH=\$TOOL_HOME/tools/hvigor/bin:\$PATH # command-line-tools/hvigor/bin\nexport PATH=\$TOOL_HOME/tools/node/bin:\$PATH # command-line-tools/tool/node/bin',
-                          ),
+                          ...CommandsText.zshrcCommands.map((command) => 
+                            Column(
+                              children: [
+                                _buildCopyButton(
+                                  title: command.title,
+                                  content: command.content,
+                                ),
+                                const SizedBox(height: 12),
+                              ],
+                            )
+                          ).toList(),
                         ],
                       ),
                     ),
